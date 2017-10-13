@@ -3,6 +3,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <memory>
 
 bool next_combination(int* tab, int size, int color_count) {
   bool carry = true;
@@ -63,9 +64,10 @@ int main() {
 
   StrataMap map(width, height);
 
-  int* permut = new int[nrows];
-  int* colorcomb = new int[nrows];
+  std::unique_ptr<int[]> permut (new int[nrows]);
+  std::unique_ptr<int[]> colorcomb (new int[nrows]);
 
+  //initialize arrays
   for(int i=0;i<nrows;++i) {
     permut[i] = i;
     colorcomb[i] = 0;
@@ -99,8 +101,6 @@ int main() {
   //do the checking
   do {
     do {
-      //std::cout << comb_number++ << std::endl;
-
       for(int i=0;i<nrows;++i) {
         map.add_ribbon(permut[i], colors[colorcomb[i]]);
       }
@@ -139,13 +139,10 @@ int main() {
       }
 
       map.reset_ribbons();
-    } while(next_combination(colorcomb, nrows, ncolors));
+    } while(next_combination(colorcomb.get(), nrows, ncolors));
 
     ++permutation_number;
-  } while(std::next_permutation(permut, permut+nrows));
-
-  delete[] colorcomb;
-  delete[] permut;
+  } while(std::next_permutation(permut.get(), permut.get()+nrows));
 
   return 0;
 }
