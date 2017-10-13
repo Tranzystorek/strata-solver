@@ -7,6 +7,8 @@ enum class Color {
   ORANGE
 };
 
+const char* color_to_string(Color);
+
 struct Field {
   Field(Color = Color::NONE);
 

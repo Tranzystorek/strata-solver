@@ -20,25 +20,6 @@ bool next_combination(int* tab, int size, int color_count) {
   return !carry;
 }
 
-const char* color_to_string(Color c) {
-  switch(c) {
-  case Color::YELLOW:
-    return "Yellow";
-
-  case Color::RED:
-    return "Red";
-
-  case Color::GREEN:
-    return "Green";
-
-  case Color::PURPLE:
-    return "Purple";
-
-  case Color::ORANGE:
-    return "Orange";
-  }
-}
-
 enum Side {
   A,
   B
