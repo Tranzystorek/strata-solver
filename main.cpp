@@ -29,6 +29,30 @@ inline Side get_side(int r, int w) {
   return (r < w) ? Side::A : Side::B;
 }
 
+inline Color choose_color(char choice) {
+  switch(choice) {
+  case 'y':
+  case 'Y':
+    return Color::YELLOW;
+
+  case 'r':
+  case 'R':
+    return Color::RED;
+
+  case 'g':
+  case 'G':
+    return Color::GREEN;
+
+  case 'p':
+  case 'P':
+    return Color::PURPLE;
+
+  case 'o':
+  case 'O':
+    return Color::ORANGE;
+  }
+}
+
 int main() {
   int width, height, ncolors, nfields;
 
@@ -57,32 +81,7 @@ int main() {
 
     std::cin >> x >> y >> choice;
 
-    switch(choice) {
-    case 'y':
-    case 'Y':
-      chosen = Color::YELLOW;
-      break;
-
-    case 'r':
-    case 'R':
-      chosen = Color::RED;
-      break;
-
-    case 'g':
-    case 'G':
-      chosen = Color::GREEN;
-      break;
-
-    case 'p':
-    case 'P':
-      chosen = Color::PURPLE;
-      break;
-
-    case 'o':
-    case 'O':
-      chosen = Color::ORANGE;
-      break;
-    }
+    chosen = choose_color(choice);
 
     map.set_field_color(x, y, chosen);
 
