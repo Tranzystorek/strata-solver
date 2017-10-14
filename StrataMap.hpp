@@ -31,7 +31,7 @@ public:
   void restore_row(int rownumber, Color c,
                    const std::vector<int>& positions);
 
-  Color check_monocolor(int rownumber);
+  Color check_monocolor(int rownumber) const;
 
   int get_nrows() const { return w+h; }
   bool is_empty() const { return !nfields; }

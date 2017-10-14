@@ -51,7 +51,7 @@ void StrataMap::restore_row(int rownumber, Color c,
   }//if-else
 }
 
-Color StrataMap::check_monocolor(int rownumber) {
+Color StrataMap::check_monocolor(int rownumber) const {
   Color col = Color::NONE;
 
   if(rownumber < w) {
