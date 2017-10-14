@@ -3,16 +3,15 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <memory>
 
-bool next_combination(int* tab, int size, int color_count) {
+bool next_combination(std::vector<int>& tab, int color_count) {
   bool carry = true;
 
-  for(int i=0;i<size;++i) {
-    if(tab[i] == color_count-1) {
-      tab[i] = 0;
-    } else {
-      ++tab[i];
+  for(auto& n : tab) {
+    if(n == color_count-1)
+      n = 0;
+    else {
+      ++n;
       carry = false;
       break;
     }
@@ -64,14 +63,11 @@ int main() {
 
   StrataMap map(width, height);
 
-  std::unique_ptr<int[]> permut (new int[nrows]);
-  std::unique_ptr<int[]> colorcomb (new int[nrows]);
+  std::vector<int> permut(nrows);
+  std::vector<int> colorcomb(nrows, 0);
 
-  //initialize arrays
-  for(int i=0;i<nrows;++i) {
-    permut[i] = i;
-    colorcomb[i] = 0;
-  }
+  std::generate(permut.begin(), permut.end(),
+                [](){static int ret = -1; return ++ret;});
 
   std::vector<Color> colors;
 
@@ -144,10 +140,10 @@ int main() {
         map.reset_ribbons();
         break;
       }//if
-    } while(next_combination(colorcomb.get(), nrows, ncolors));
+    } while(next_combination(colorcomb, ncolors));
 
     ++permutation_number;
-  } while(std::next_permutation(permut.get(), permut.get()+nrows));
+  } while(std::next_permutation(permut.begin(), permut.end()));
 
   return 0;
 }
