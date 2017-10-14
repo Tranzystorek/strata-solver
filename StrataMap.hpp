@@ -1,3 +1,6 @@
+#ifndef STRATAMAP_HPP
+#define STRATAMAP_HPP
+
 enum class Color {
   NONE,
   YELLOW,
@@ -24,7 +27,7 @@ public:
   StrataMap(int, int);
   ~StrataMap();
 
-  void add_ribbon(int rownumber, Color c);
+  bool add_ribbon(int rownumber, Color c);
   void reset_ribbons();
 
   void set_field_color(int x, int y, Color c);
@@ -36,3 +39,5 @@ private:
   int h;
   Field** map;
 };
+
+#endif //STRATAMAP_HPP

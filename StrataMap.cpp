@@ -53,16 +53,34 @@ void Field::set_ribbon(Color c) {
     covered = true;
 }
 
-void StrataMap::add_ribbon(int rownumber, Color c) {
+bool StrataMap::add_ribbon(int rownumber, Color c) {
   if(rownumber < w) {
-    for(int i=0;i<h;++i)
-      map[rownumber][i].set_ribbon(c);
+    for(int i=0;i<h;++i) {
+      Field& f = map[rownumber][i];
+
+      f.set_ribbon(c);
+
+      if(f.ribcolor != Color::NONE &&
+         f.fcolor != Color::NONE &&
+         f.fcolor != f.ribcolor)
+        return false;
+    }
   } else {
     rownumber -= w;
 
-    for(int i=0;i<w;++i)
-      map[i][rownumber].set_ribbon(c);
+    for(int i=0;i<w;++i) {
+      Field& f = map[i][rownumber];
+
+      f.set_ribbon(c);
+
+      if(f.ribcolor != Color::NONE &&
+         f.fcolor != Color::NONE &&
+         f.fcolor != f.ribcolor)
+        return false;
+    }
   }
+
+  return true;
 }
 
 Field::Field(Color c)

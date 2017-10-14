@@ -55,10 +55,10 @@ inline Color choose_color(char choice) {
 }
 
 int main() {
-  int width, height, ncolors, nfields;
+  int width, height, nfields;
 
-  std::cout << "[W H NCOLORS NFIELDS]: " << std::endl;
-  std::cin >> width >> height >> ncolors >> nfields;
+  std::cout << "[W H NFIELDS]: " << std::endl;
+  std::cin >> width >> height >> nfields;
 
   const int nrows = width + height;
 
@@ -94,18 +94,25 @@ int main() {
 
   std::cout << "Solving..." << std::endl;
 
+  const int ncolors = colors.size();
   int solution_number = 1;
-  int comb_number = 1;
   int permutation_number = 1;
 
   //do the checking
   do {
     do {
-      for(int i=0;i<nrows;++i) {
-        map.add_ribbon(permut[i], colors[colorcomb[i]]);
-      }
+      bool failed = false;
 
-      if(map.check()) {
+      //add all ribbons and verify solution validity
+      for(int i=0;i<nrows;++i)
+        if(!map.add_ribbon(permut[i], colors[colorcomb[i]])) {
+          map.reset_ribbons();
+          failed = true;
+          break;
+        }
+
+      //on finding a solution
+      if(!failed) {
         std::cout << "SOLUTION " << solution_number++ << ", PERMUTATION " << permutation_number << std::endl;
 
         bool is_arbitrary = true;
@@ -136,9 +143,7 @@ int main() {
 
         map.reset_ribbons();
         break;
-      }
-
-      map.reset_ribbons();
+      }//if
     } while(next_combination(colorcomb.get(), nrows, ncolors));
 
     ++permutation_number;
