@@ -16,7 +16,7 @@ void Solver::init_searchspace(const StrataMap& map) {
 
     if(rcolor != Color::NONE) {
       Sequence s;
-      s.push(Move(i, rcolor));
+      s.push_back(Move(i, rcolor));
 
       searchspace_.push(s);
     }
@@ -36,13 +36,13 @@ void Solver::print_solution(const StrataMap& map,
   }
 
   while(!solution.empty()) {
-    const Move& m = solution.top();
+    const Move& m = solution.back();
 
     std::cout << "ROW " << map.human_readable_rownumber(m.row)
               << ", COLOR " << color_to_string(m.color)
               << std::endl;
 
-    solution.pop();
+    solution.pop_back();
   }
 
   std::cout << std::endl;
@@ -77,30 +77,34 @@ void Solver::solve(StrataMap& map) {
     Sequence next = s;
 
     while(!s.empty()) {
-      Move m = s.top();
-      s.pop();
+      const Move& m = s.front();
 
       unused_rows.erase(map.human_readable_rownumber(m.row));
-
       revertor_.push(std::make_pair(m,
                                     map.remove_row(m.row)));
+
+      s.pop_front();
     }//while
 
     //on finding a solution - print
     if(map.is_empty()) {
       std::cout << "SOLUTION " << ++solution_number << std::endl;
       print_solution(map, next, unused_rows);
-    }
-    else
+    } else {
+      next.push_back(Move(0, Color::NONE));
+      Move& m = next.back();
+
       for(int i=0;i<nrows;++i) {
         const Color rcolor = map.check_monocolor(i);
 
         if(rcolor != Color::NONE) {
-          next.push(Move(i, rcolor));
+          m.row = i;
+          m.color = rcolor;
+
           searchspace_.push(next);
-          next.pop();
         }
       }//for
+    }
 
     //revert performed moves
     if(searchspace_.size() > 1)

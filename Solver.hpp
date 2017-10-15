@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include <stack>
+#include <deque>
 #include <set>
 #include <utility>
 
@@ -19,7 +20,7 @@ struct Move {
 class Solver {
 public:
   using Revertible = std::pair<Move, std::vector<int>>;
-  using Sequence = std::stack<Move>;
+  using Sequence = std::deque<Move>;
 
 public:
   void solve(StrataMap&);
