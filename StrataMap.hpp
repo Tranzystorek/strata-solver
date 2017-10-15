@@ -45,6 +45,7 @@ private:
   int h_;
   int nfields_;
   Field** map_;
+  Field* storage_;
 };
 
 #endif //STRATAMAP_HPP

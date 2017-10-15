@@ -110,15 +110,20 @@ StrataMap::StrataMap(int w, int h)
   : w_(w),
     h_(h),
     nfields_(0) {
+  int size = w_ * h_;
+
+  storage_ = new Field[size]();
   map_ = new Field*[w_];
 
-  for(int i=0;i<w_;++i)
-    map_[i] = new Field[h_]();
+  Field* end = storage_ + size;
+  Field** it = map_;
+
+  for(Field* ptr = storage_;
+      ptr < end; ptr += h_, ++it)
+    *it = ptr;
 }
 
 StrataMap::~StrataMap() {
-  for(int i=0;i<w_;++i)
-    delete[] map_[i];
-
   delete[] map_;
+  delete[] storage_;
 }
