@@ -33,18 +33,18 @@ public:
 
   Color check_monocolor(int rownumber) const;
 
-  int get_nrows() const { return w+h; }
-  bool is_empty() const { return !nfields; }
+  int get_nrows() const { return w_+h_; }
+  bool is_empty() const { return !nfields_; }
 
   inline int human_readable_rownumber(int rownumber) const {
-    return (rownumber < w) ? (w - rownumber - 1) : rownumber;
+    return (rownumber < w_) ? (w_ - rownumber - 1) : rownumber;
   }
 
 private:
-  int w;
-  int h;
-  int nfields;
-  Field** map;
+  int w_;
+  int h_;
+  int nfields_;
+  Field** map_;
 };
 
 #endif //STRATAMAP_HPP
