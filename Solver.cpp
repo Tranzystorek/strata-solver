@@ -1,7 +1,6 @@
 #include "Solver.hpp"
 
 #include <iostream>
-#include <set>
 
 Move::Move(int r, Color c)
   : row(r),
@@ -25,15 +24,19 @@ void Solver::init_searchspace(const StrataMap& map) {
 
 void Solver::print_solution(const StrataMap& map,
                             Sequence& solution,
-                            const std::set<int>& unused) {
-  if(!unused.empty()) {
-    std::cout << "ROWS ( ";
+                            const std::vector<bool>& unused) {
+  int pos = 0;
 
-    for(auto& r : unused)
-      std::cout << r << " ";
+  std::cout << "ROWS ( ";
 
-    std::cout << "), COLOR *" << std::endl;
+  for(auto b : unused) {
+    if(b)
+      std::cout << pos << " ";
+
+    ++pos;
   }
+
+  std::cout << "), COLOR *" << std::endl;
 
   while(!solution.empty()) {
     const Move& m = solution.back();
@@ -48,12 +51,12 @@ void Solver::print_solution(const StrataMap& map,
   std::cout << std::endl;
 }
 
-void Solver::revert_moves(StrataMap& map, std::set<int>& unused) {
+void Solver::revert_moves(StrataMap& map, std::vector<bool>& unused) {
   while(!revertor_.empty()) {
     const Revertible& r = revertor_.top();
     const Move& m = r.first;
     map.restore_row(m.row, m.color, r.second);
-    unused.insert(map.human_readable_rownumber(m.row));
+    unused[map.human_readable_rownumber(m.row)] = true;
 
     revertor_.pop();
   }//while
@@ -63,10 +66,7 @@ void Solver::solve(StrataMap& map) {
   int nrows = map.get_nrows();
   int solution_number = 0;
 
-  std::set<int> unused_rows;
-
-  for(int i=0;i<nrows;++i)
-    unused_rows.insert(i);
+  std::vector<bool> unused_rows(nrows, true);
 
   //initialize searchspace
   init_searchspace(map);
@@ -79,7 +79,7 @@ void Solver::solve(StrataMap& map) {
     while(!s.empty()) {
       const Move& m = s.front();
 
-      unused_rows.erase(map.human_readable_rownumber(m.row));
+      unused_rows[map.human_readable_rownumber(m.row)] = false;
       revertor_.push(std::make_pair(m,
                                     map.remove_row(m.row)));
 

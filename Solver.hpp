@@ -29,9 +29,9 @@ private:
   void init_searchspace(const StrataMap&);
   void print_solution(const StrataMap& map,
                       Sequence& solution,
-                      const std::set<int>& unused);
+                      const std::vector<bool>& unused);
   void revert_moves(StrataMap&,
-                    std::set<int>&);
+                    std::vector<bool>&);
 
 private:
   std::queue<Sequence> searchspace_;
