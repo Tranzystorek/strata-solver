@@ -4,7 +4,7 @@
 #include "Solver.hpp"
 #include "Color.hpp"
 
-inline Color colorFromChar(char choice) {
+Color colorFromChar(char choice) {
     switch(choice) {
         case 'y':
         case 'Y':
@@ -33,7 +33,6 @@ inline Color colorFromChar(char choice) {
 
 int main() {
     size_t width, height;
-    std::cout << "[W H]: " << std::endl;
     std::cin >> width >> height;
 
     const int nFields = width * height;
@@ -45,8 +44,6 @@ int main() {
         Color chosen = colorFromChar(choice);
         colors.push_back(chosen);
     }
-
-    std::cout << "Solving..." << std::endl;
 
     Map map(colors, width, height);
     Solver solver;
