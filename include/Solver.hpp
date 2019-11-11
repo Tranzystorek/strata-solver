@@ -1,5 +1,5 @@
-#ifndef SOLVERV2_HPP
-#define SOLVERV2_HPP
+#ifndef STRATA_SOLVER_SOLVER_HPP
+#define STRATA_SOLVER_SOLVER_HPP
 
 #include <valarray>
 #include <vector>
@@ -33,4 +33,4 @@ private:
     std::vector<bool> mUnused;
 };
 
-#endif //SOLVERV2_HPP
+#endif //STRATA_SOLVER_SOLVER_HPP
