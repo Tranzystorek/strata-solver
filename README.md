@@ -84,6 +84,6 @@ Row numbers shall be interpreted as follows:
    4 5 6 7
 ```
 
-The first line of the solution description, with the `Color *`,
+The first line of the solution description, with the `COLOR *`,
 shows that the highlighted rows can be assigned any color
 and will not impact the correctness of the solution.
