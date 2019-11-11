@@ -5,7 +5,7 @@
 #include "Color.hpp"
 
 Color colorFromChar(char choice) {
-    switch(choice) {
+    switch (choice) {
         case 'y':
         case 'Y':
             return Color::YELLOW;
@@ -35,9 +35,9 @@ int main() {
     size_t width, height;
     std::cin >> width >> height;
 
-    const int nFields = width * height;
+    const size_t nFields = width * height;
     std::vector<Color> colors; colors.reserve(nFields);
-    for(int i=0; i < nFields; ++i) {
+    for (size_t i=0; i < nFields; ++i) {
         char choice;
         std::cin >> choice;
 
@@ -51,7 +51,8 @@ int main() {
 
     int solutionNumber = 1;
     for (auto& s : solutions) {
-        std::cout << "SOLUTION " << solutionNumber++ << '\n' << s.toString() << std::endl;
+        std::cout << "SOLUTION " << solutionNumber++ << '\n'
+                  << s.toString() << std::endl;
     }
 
     return 0;

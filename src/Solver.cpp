@@ -6,9 +6,9 @@
 
 void Solver::initializeSearchspace(const Map& map) {
     const size_t nRibbons = map.getRibbonNumber();
-    for(size_t i=0; i < nRibbons; ++i) {
+    for (size_t i=0; i < nRibbons; ++i) {
         const Color rowColor = map.checkMonocolor(i);
-        if(rowColor != Color::NONE) {
+        if (rowColor != Color::NONE) {
             Sequence s;
             s.push_back(Move(i, rowColor));
 
@@ -21,7 +21,7 @@ Solution Solver::makeSolution(const Map& map,
                               Sequence& solution) {
     std::vector<size_t> unusedRows; unusedRows.reserve(mUnused.size());
     size_t pos = 0;
-    for(auto b : mUnused) {
+    for (auto b : mUnused) {
         if(b)
             unusedRows.push_back(pos);
 
@@ -29,7 +29,7 @@ Solution Solver::makeSolution(const Map& map,
     }
 
     std::vector<Move> moves; moves.reserve(solution.size());
-    while(!solution.empty()) {
+    while (!solution.empty()) {
         Move move = solution.back();
         moves.push_back(move);
         solution.pop_back();
@@ -39,7 +39,7 @@ Solution Solver::makeSolution(const Map& map,
 }
 
 void Solver::revertMoves(Map& map) {
-    while(!mRevertor.empty()) {
+    while (!mRevertor.empty()) {
         const Revertible& r = mRevertor.top();
         const Move& move = r.first;
         map.restoreColor(r.second, move.color);
@@ -59,29 +59,28 @@ std::vector<Solution> Solver::solve(Map& map) {
 
     // procedurally search for possible moves
     std::vector<Solution> solutions;
-    while(!mSearchspace.empty()) {
+    while (!mSearchspace.empty()) {
         Sequence& sequence = mSearchspace.front();
         Sequence next = sequence;
 
-        while(!sequence.empty()) {
+        while (!sequence.empty()) {
             const Move& move = sequence.front();
 
             mUnused[move.row] = false;
-            mRevertor.push(std::make_pair(move,
-                                          map.removeColor(move.row)));
+            mRevertor.emplace(move, map.removeColor(move.row));
 
             sequence.pop_front();
         } // while
 
         // on finding a solution - add to collection
-        if(map.isUncolored()) {
+        if (map.isUncolored()) {
             Solution solution = makeSolution(map, next);
             solutions.push_back(solution);
         } else {
-            next.push_back(Move(0, Color::NONE));
+            next.emplace_back(0, Color::NONE);
             Move& m = next.back();
 
-            for(size_t i=0; i < nRibbons; ++i) {
+            for (size_t i=0; i < nRibbons; ++i) {
                 const Color ribbonColor = map.checkMonocolor(i);
 
                 if(ribbonColor != Color::NONE) {
@@ -94,7 +93,7 @@ std::vector<Solution> Solver::solve(Map& map) {
         }
 
         // revert performed moves
-        if(mSearchspace.size() > 1)
+        if (mSearchspace.size() > 1)
             revertMoves(map);
 
         mSearchspace.pop();
