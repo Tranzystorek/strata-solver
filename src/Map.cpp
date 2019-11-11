@@ -9,6 +9,8 @@
 #include <iterator>
 #include <vector>
 
+#include "ColorChecker.hpp"
+
 Map::Map(const std::vector<Color>& map, Map::SizeType width, Map::SizeType height)
         : mWidth(width),
           mHeight(height),
@@ -25,29 +27,6 @@ Map::Map(const std::vector<Color>& map, Map::SizeType width, Map::SizeType heigh
 }
 
 Color Map::checkMonocolor(Map::SizeType number) const {
-    class ColorChecker {
-    public:
-        ColorChecker() : currentColor(Color::NONE) {}
-
-        bool operator()(Color color) {
-            if (color == Color::NONE) {
-                return true;
-            }
-
-            if (currentColor == Color::NONE) {
-                currentColor = color;
-                return true;
-            }
-
-            return currentColor == color;
-        }
-
-        Color getColor() const { return currentColor; }
-
-    private:
-        Color currentColor;
-    };
-
     ColorChecker checker;
     auto slice = getSlice(number);
     const std::valarray<Color> checkedSlice = mMap[slice];
