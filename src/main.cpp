@@ -45,7 +45,7 @@ int main() {
         colors.push_back(chosen);
     }
 
-    Map map(colors, width, height);
+    Map map{colors, width, height};
     Solver solver;
     std::vector<Solution> solutions = solver.solve(map);
 
